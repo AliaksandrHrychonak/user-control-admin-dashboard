@@ -7,10 +7,9 @@ import { PersistGate } from 'redux-persist/integration/react';
 
 import { createStore } from '../store';
 
+import type { ReactNode, JSX} from 'react';
 
-import type { ReactNode} from 'react';
-
-export const WithStoreProvider = ({ children }: { children: ReactNode }) => {
+export const WithStoreProvider = ({ children }: { children: ReactNode }): JSX.Element => {
     const storeRef = useRef<AppStore>(undefined);
     const persistorRef = useRef<Persistor>({} as Persistor);
     if (!storeRef.current) {

@@ -30,7 +30,7 @@ export const useUserUnblockController = ({
                 toast.error(`Failed to unblock user: ${error}`);
             }
         },
-        [onComplete]
+        [onComplete, unblock]
     );
 
     return { onUnblock, isLoading };

@@ -6,7 +6,9 @@ import React from 'react';
 import { RegisterForm } from '@features/session';
 import { Button } from '@shared/ui';
 
-const SignUpPage = () => {
+import type {JSX} from 'react';
+
+const SignUpPage = (): JSX.Element => {
     const router = useRouter();
     return (
         <main className='flex min-h-svh w-full items-center justify-center p-6 md:p-10'>
@@ -19,6 +21,7 @@ const SignUpPage = () => {
                     className='text-sm text-muted-foreground px-2 py-0 h-fit'
                 >
                     Already have an account? Sign in ⇒
+                    {/* eslint-disable-next-line react/jsx-no-comment-textnodes */}
                 </Button>
                 // TODO Routes should be taken from the config, need fix after review
                 <RegisterForm onComplete={() => router.push('/sign-in')} />

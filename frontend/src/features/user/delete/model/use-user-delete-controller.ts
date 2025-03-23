@@ -30,7 +30,7 @@ export const useUserDeleteController = ({
                 toast.error(`Failed to delete user: ${error}`);
             }
         },
-        [onComplete]
+        [block, onComplete]
     );
 
     return { onDelete, isLoading };

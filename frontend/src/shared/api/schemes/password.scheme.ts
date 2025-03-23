@@ -4,7 +4,7 @@ import { z } from 'zod';
 // export const passwordScheme = z.string().min(8, { message: 'Minimum password length 8 characters' });
 export const passwordScheme = z.string().min(1, { message: 'Minimum password length 1 characters' });
 
-export const validatePassword = (_password: string, _ctx: z.RefinementCtx) => {
+export const validatePassword = (_password: string, _ctx: z.RefinementCtx): void => {
     // TODO: Enable after review
     // const containsUppercase = (ch: string) => /[A-Z]/.test(ch);
     // const containsLowercase = (ch: string) => /[a-z]/.test(ch);

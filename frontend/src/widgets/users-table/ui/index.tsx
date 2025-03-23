@@ -7,8 +7,7 @@ import {
     useReactTable,
 } from '@tanstack/react-table';
 import { ArrowUpDown, Plus } from 'lucide-react';
-import * as React from 'react';
-import { useState } from 'react';
+import { useState} from 'react';
 
 import { useListQuery } from '@entities/user';
 import {
@@ -40,6 +39,7 @@ import type { IUser, IUserBlockRequest, IUserDeleteRequest, IUserUnblockRequest 
 import type {
     ColumnDef,
     ColumnSort} from '@tanstack/react-table';
+import type {JSX} from 'react';
 
 // TODO need fix before review
 const SORTABLE_COLUMNS = ['id', 'email', 'firstName', 'lastName', 'lastSeenAt'];
@@ -48,14 +48,14 @@ const PAGE_SIZES = [5, 10, 20, 50, 100];
 export const columns: ColumnDef<IUser>[] = [
     {
         id: 'select',
-        header: ({ table }) => (
+        header: ({ table }): JSX.Element  => (
             <Checkbox
                 checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && 'indeterminate')}
                 onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
                 aria-label='Select all'
             />
         ),
-        cell: ({ row }) => (
+        cell: ({ row }): JSX.Element => (
             <Checkbox
                 checked={row.getIsSelected()}
                 onCheckedChange={(value) => row.toggleSelected(!!value)}
@@ -67,7 +67,7 @@ export const columns: ColumnDef<IUser>[] = [
     },
     {
         accessorKey: 'email',
-        header: ({ column }) => {
+        header: ({ column }): JSX.Element | string => {
             return SORTABLE_COLUMNS.includes('email') ? (
                 <Button
                     variant='ghost'
@@ -84,7 +84,7 @@ export const columns: ColumnDef<IUser>[] = [
     },
     {
         accessorKey: 'firstName',
-        header: ({ column }) => {
+        header: ({ column }): JSX.Element | string => {
             return SORTABLE_COLUMNS.includes('firstName') ? (
                 <Button
                     variant='ghost'
@@ -101,7 +101,7 @@ export const columns: ColumnDef<IUser>[] = [
     },
     {
         accessorKey: 'lastName',
-        header: ({ column }) => {
+        header: ({ column }): JSX.Element | string => {
             return SORTABLE_COLUMNS.includes('lastName') ? (
                 <Button
                     variant='ghost'
@@ -118,7 +118,7 @@ export const columns: ColumnDef<IUser>[] = [
     },
     {
         accessorKey: 'lastSeenAt',
-        header: ({ column }) => {
+        header: ({ column }): JSX.Element | string => {
             return SORTABLE_COLUMNS.includes('lastSeenAt') ? (
                 <Button
                     variant='ghost'
@@ -132,13 +132,13 @@ export const columns: ColumnDef<IUser>[] = [
                 'Last Seen'
             );
         },
-        cell: ({ row }) => {
+        cell: ({ row }): unknown => {
             return row.getValue('lastSeenAt');
         },
     },
 ];
 
-export const UsersTable = () => {
+export const UsersTable = (): JSX.Element => {
     const [page, setPage] = useState(1);
     const [pageSize, setPageSize] = useState(5);
     const [searchTerm, setSearchTerm] = useState('');
@@ -188,15 +188,15 @@ export const UsersTable = () => {
             .filter(Boolean),
     };
 
-    const handleBlock = async () => {
+    const handleBlock = async (): Promise<void> => {
         await onBlock(selectedUsers);
     };
 
-    const handleUnblock = async () => {
+    const handleUnblock = async (): Promise<void> => {
         await onUnblock(selectedUsers);
     };
 
-    const handleDelete = async () => {
+    const handleDelete = async (): Promise<void> => {
         await onDelete(selectedUsers);
     };
 

@@ -1,7 +1,6 @@
 import { fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
-import { CredentialsNames } from '@shared/api';
-
+import { CredentialsNames } from '../types';
 import { sessionGet } from './session';
 
 // TODO need fix before review

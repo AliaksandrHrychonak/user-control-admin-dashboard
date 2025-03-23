@@ -30,7 +30,7 @@ export const useLoginFormController = ({
                 toast.error(`Failed to login: ${error}`);
             }
         },
-        [onComplete]
+        [login, onComplete]
     );
 
     return { handleSubmit, isLoading };

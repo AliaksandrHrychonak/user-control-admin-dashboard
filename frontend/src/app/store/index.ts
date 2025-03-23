@@ -17,7 +17,7 @@ const persistConfig = {
     whitelist: [sessionSlice.name],
 };
 
-export function createStore() {
+export function createStore(): ReturnType<typeof configureStore>  {
     const store = configureStore({
         // persistReducer broken https://github.com/reduxjs/redux-toolkit/issues/324
         reducer: persistReducer<ReturnType<typeof rootReducer>>(persistConfig, rootReducer),

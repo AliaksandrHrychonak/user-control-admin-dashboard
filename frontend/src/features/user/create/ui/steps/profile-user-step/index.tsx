@@ -34,7 +34,7 @@ export const ProfileUserStep = (): JSX.Element => {
                         </FormItem>
                     )}
                 />
-                // TODO There should be a Select when a large number of options appear, need fix after review
+                {/*// TODO There should be a Select when a large number of options appear, need fix after review*/}
                 <FormFieldProvider
                     name='profileInfo.signUpForm'
                     render={({ field }) => (

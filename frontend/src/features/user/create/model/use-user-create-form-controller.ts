@@ -39,7 +39,7 @@ export const useUserCreateFormController = ({
                 toast.error(`Failed to create user: ${error}`);
             }
         },
-        [onComplete]
+        [create, onComplete]
     );
 
     return { handleSubmit, isLoading };

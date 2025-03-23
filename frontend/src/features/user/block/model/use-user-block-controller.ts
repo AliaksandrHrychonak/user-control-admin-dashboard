@@ -30,7 +30,7 @@ export const useUserBlockController = ({
                 toast.error(`Failed to block user: ${error}`);
             }
         },
-        [onComplete]
+        [block, onComplete]
     );
 
     return { onBlock, isLoading };

@@ -38,7 +38,7 @@ export const useRegisterFormController = ({
                 toast.error(`Failed register: ${error}`);
             }
         },
-        [onComplete]
+        [onComplete, signUp]
     );
 
     return { handleSubmit, isLoading };
