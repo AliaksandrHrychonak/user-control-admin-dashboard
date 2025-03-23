@@ -1,6 +1,6 @@
 import { AuthService } from '../../../common/auth/services/auth.service';
 import { ApiTags } from '@nestjs/swagger';
-import { Body, Controller, Delete, Get, Patch, Post } from '@nestjs/common';
+import {Body, Controller, Delete, Get, HttpCode, Patch, Post, UseGuards} from '@nestjs/common';
 import { UserService } from '../services/user.service';
 import { AuthJwtAdminAccessProtected } from '../../../common/auth/decorators/auth.jwt.decorator';
 
@@ -11,8 +11,13 @@ import { ENUM_USER_SIGN_UP_FROM } from '../constants/user.enum.constant';
 import { UserBulkRequestDto } from '../dtos/user-bulk.request.dto';
 import { Paginate, Paginated, PaginateQuery } from 'nestjs-paginate';
 import { UserAdminGuard } from '../decorators/user.admin.decorator';
+import {UpdateResult} from "typeorm";
+import {DeleteResult} from "typeorm/query-builder/result/DeleteResult";
+import {ThrottlerGuard} from "@nestjs/throttler";
+
 
 @ApiTags('modules.admin.user')
+@UseGuards(ThrottlerGuard)
 @Controller({
     version: '1',
     path: 'admin/user',
@@ -53,24 +58,32 @@ export class UserAdminController {
     @UserAdminGuard()
     @AuthJwtAdminAccessProtected()
     @Patch('/update/unblocked')
-    async unblockedBulk(@Body() { users }: UserBulkRequestDto): Promise<void> {
-        await this.userService.unblockedBulk(users);
-        return;
+    async unblockedBulk(@Body() { users }: UserBulkRequestDto): Promise<{ data: UpdateResult }> {
+        const unblocked = await this.userService.unblockedBulk(users);
+
+        return {
+            data: unblocked
+        }
     }
 
     @UserAdminGuard()
     @AuthJwtAdminAccessProtected()
     @Patch('/update/blocked')
-    async blockedBulk(@Body() { users }: UserBulkRequestDto): Promise<void> {
-        await this.userService.blockedBulk(users);
-        return;
+    async blockedBulk(@Body() { users }: UserBulkRequestDto): Promise<{ data: UpdateResult }> {
+        const blocked = await this.userService.blockedBulk(users);
+        return {
+            data: blocked
+        }
     }
 
     @UserAdminGuard()
     @AuthJwtAdminAccessProtected()
     @Delete('/delete')
-    async deleteBulk(@Body() { users }: UserBulkRequestDto): Promise<void> {
-        await this.userService.deleteBulk(users);
-        return;
+    async deleteBulk(@Body() { users }: UserBulkRequestDto): Promise<{data: DeleteResult}> {
+        const deleteResult = await this.userService.deleteBulk(users);
+
+        return {
+            data: deleteResult
+        }
     }
 }

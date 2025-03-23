@@ -13,6 +13,7 @@ import { APP_LANGUAGE } from './constants/app.constant';
 import { ENUM_APP_ENVIRONMENT } from './constants/app.enum.constant';
 import { ErrorModule } from '../common/error/error.module';
 import { RequestModule } from '../common/request/request.module';
+import { ThrottlerModule } from '@nestjs/throttler';
 
 @Module({
     controllers: [AppController],
@@ -91,6 +92,12 @@ import { RequestModule } from '../common/request/request.module';
                 logging: configService.get('DATABASE_DEBUG'),
             }),
             inject: [ConfigService],
+        }),
+        ThrottlerModule.forRoot({
+            throttlers: [{
+                ttl: 60,
+                limit: 10,
+            }],
         }),
         HelperModule,
         RequestModule,

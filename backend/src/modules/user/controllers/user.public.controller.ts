@@ -6,7 +6,7 @@ import {
     HttpCode,
     HttpStatus,
     NotFoundException,
-    Post,
+    Post, UseGuards,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { ENUM_AUTH_LOGIN_WITH } from 'src/common/auth/constants/auth.enum.constant';
@@ -21,8 +21,10 @@ import { UserSignUpDto } from 'src/modules/user/dtos/user.sign-up.dto';
 import { UserEntity } from 'src/modules/user/repository/entities/user.entity';
 import { UserPayloadSerialization } from 'src/modules/user/serializations/user.payload.serialization';
 import { UserService } from 'src/modules/user/services/user.service';
+import {ThrottlerGuard} from "@nestjs/throttler";
 
 @ApiTags('modules.public.user')
+@UseGuards(ThrottlerGuard)
 @Controller({
     version: '1',
     path: 'public/user',
