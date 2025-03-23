@@ -1,6 +1,6 @@
 module.exports = {
     apps: [{
-        name: 'next-app',
+        name: 'FRONTEND',
         script: 'npm',
         args: 'start',
         env: {
