@@ -6,7 +6,7 @@
   "scripts": {
     "start": "next start",
     "start:dev": "next dev --turbopack",
-    "start:build": "next build",
+    "start:build": "NODE_OPTIONS='--max-old-space-size=4096' next build",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,css,scss,md}\"",
     "lint": "eslint \"src/**/*.{ts,tsx}\" --no-error-on-unmatched-pattern",
     "lint:fix": "eslint \"src/**/*.{ts,tsx}\" --fix --no-error-on-unmatched-pattern",
@@ -48,6 +48,7 @@
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "@feature-sliced/steiger-plugin": "^0.5.4",
+    "@next/eslint-plugin-next": "^15.2.3",
     "@stylistic/eslint-plugin": "^4.0.1",
     "@tailwindcss/postcss": "^4",
     "@types/js-cookie": "^3.0.6",
