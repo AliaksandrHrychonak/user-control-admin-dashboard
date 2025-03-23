@@ -91,19 +91,19 @@ export class UserService {
         return this.userRepository.save(repository, options);
     }
 
-    async unblockedBulk(ids: string[]): Promise<void> {
-        await this.userRepository.update({ id: In(ids) }, { blocked: false, blockedDate: null });
+    async unblockedBulk(ids: string[]) {
+        return this.userRepository.update({ id: In(ids) }, { blocked: false, blockedDate: null });
     }
 
-    async blockedBulk(ids: string[]): Promise<void> {
-        await this.userRepository.update(
+    async blockedBulk(ids: string[]) {
+        return this.userRepository.update(
             { id: In(ids) },
             { blocked: true, blockedDate: this.helperDateService.create() }
         );
     }
 
-    async deleteBulk(ids: string[]): Promise<void> {
-        await this.userRepository.delete({ id: In(ids) });
+    async deleteBulk(ids: string[]) {
+        return this.userRepository.delete({ id: In(ids) });
     }
 
     async payloadSerialization(data: UserEntity): Promise<UserPayloadSerialization> {
