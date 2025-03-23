@@ -1,10 +1,12 @@
 import type { NestApplication} from '@nestjs/core';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app/app.module';
-import { Logger, VersioningType } from '@nestjs/common';
+import {HttpStatus, Logger, VersioningType} from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { useContainer } from 'class-validator';
 import swaggerInit from './swagger';
+import helmet from "helmet";
+import {ENUM_REQUEST_METHOD} from "./common/request/constants/request.enum.constant";
 
 async function bootstrap() {
     const app: NestApplication = await NestFactory.create(AppModule);
@@ -22,7 +24,50 @@ async function bootstrap() {
     const versionEnable: string = configService.get<string>('app.versioning.enable');
     const jobEnable: boolean = configService.get<boolean>('app.jobEnable');
 
-    app.enableCors();
+    app.enableCors({
+        methods: [
+            ENUM_REQUEST_METHOD.GET,
+            ENUM_REQUEST_METHOD.DELETE,
+            ENUM_REQUEST_METHOD.PUT,
+            ENUM_REQUEST_METHOD.PATCH,
+            ENUM_REQUEST_METHOD.POST,
+        ],
+        // allowOrigin: '*', // allow all origin
+        // allowOrigin: [/example\.com(\:\d{1,4})?$/], // allow all subdomain, and all port
+        origin: env === 'production' ? [/user-control-admin-dashboard\.monster$/] : "*", // allow all subdomain without port
+        allowedHeaders: [
+            'Accept',
+            'Accept-Language',
+            'Content-Language',
+            'Content-Type',
+            'Origin',
+            'Authorization',
+            'Access-Control-Request-Method',
+            'Access-Control-Request-Headers',
+            'Access-Control-Allow-Headers',
+            'Access-Control-Allow-Origin',
+            'Access-Control-Allow-Methods',
+            'Access-Control-Allow-Credentials',
+            'Access-Control-Expose-Headers',
+            'Access-Control-Max-Age',
+            'Referer',
+            'Host',
+            'X-Requested-With',
+            'x-custom-lang',
+            'x-timestamp',
+            'x-api-key',
+            'x-timezone',
+            'x-request-id',
+            'x-version',
+            'x-repo-version',
+            'X-Response-Time',
+            'user-agent',
+        ],
+        credentials: true,
+        preflightContinue: false,
+        optionsSuccessStatus: HttpStatus.NO_CONTENT,
+    });
+    app.use(helmet());
 
     const logger = new Logger();
     process.env.NODE_ENV = env;
