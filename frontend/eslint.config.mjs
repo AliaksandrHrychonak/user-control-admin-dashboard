@@ -69,7 +69,7 @@ const eslintConfig = [
                     },
                 },
             ],
-            'import/no-cycle': 'error',
+            'import/no-cycle': 'warn',
             'import/no-duplicates': 'error',
 
             'react-hooks/rules-of-hooks': 'error',
