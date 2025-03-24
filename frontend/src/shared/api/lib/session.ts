@@ -4,7 +4,7 @@ import { CredentialsNames } from '../types';
 
 import type { ISession } from '../types';
 
-// TODO need fix before review
+// TODO need fix after review
 const MILLISECONDS_IN_SECOND = 1000;
 
 export const sessionGet = (name: CredentialsNames): string | undefined => Cookies.get(name);
