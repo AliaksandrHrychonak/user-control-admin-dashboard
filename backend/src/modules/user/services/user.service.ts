@@ -34,7 +34,7 @@ export class UserService {
             nullSort: 'last',
             defaultSortBy: [[USER_DEFAULT_ORDER_BY, USER_DEFAULT_ORDER_DIRECTION]],
             searchableColumns: USER_DEFAULT_AVAILABLE_SEARCH,
-            select: ['id', 'email', 'firstName', 'lastName', 'lastSeenAt'],
+            select: ['id', 'email', 'firstName', 'lastName', 'lastSeenAt', 'blocked', "blockedDate"],
         });
     }
 
