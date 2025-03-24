@@ -3,3 +3,4 @@ export * from './request';
 export * from './session';
 export * from './viewer';
 export * from './user';
+export * from './error';

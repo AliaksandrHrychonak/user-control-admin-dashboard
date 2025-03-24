@@ -23,9 +23,8 @@ const SignInPage = (): JSX.Element => {
                     className='text-sm text-muted-foreground px-2 py-0 h-fit'
                 >
                     No account yet? Sign up ⇒
-                    {/* eslint-disable-next-line react/jsx-no-comment-textnodes */}
                 </Button>
-                // TODO Routes should be taken from the config, need fix after review
+                {/*// TODO Routes should be taken from the config, need fix after review*/}
                 <LoginForm onComplete={() => router.push('/')} />
             </section>
         </main>
