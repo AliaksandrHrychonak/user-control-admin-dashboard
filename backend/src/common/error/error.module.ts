@@ -45,7 +45,7 @@ import { ENUM_REQUEST_STATUS_CODE_ERROR } from '../request/constants/request.sta
 
                         return new UnprocessableEntityException({
                             statusCode: ENUM_REQUEST_STATUS_CODE_ERROR.REQUEST_VALIDATION_ERROR,
-                            message: 'request.validation',
+                            message: 'request.error.validation',
                             errors: formatErrors
                         });
                     },
