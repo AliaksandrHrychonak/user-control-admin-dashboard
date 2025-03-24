@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 // TODO: Enable after review
 // export const passwordScheme = z.string().min(8, { message: 'Minimum password length 8 characters' });
-export const passwordScheme = z.string().min(1, { message: 'Minimum password length 1 characters' });
+export const passwordScheme = z.string().min(1, { message: 'Minimum password length 1 characters' }).refine((value) => value.trim().length > 0, { message: 'Password cannot be whitespace only' });
 
 export const validatePassword = (_password: string, _ctx: z.RefinementCtx): void => {
     // TODO: Enable after review
