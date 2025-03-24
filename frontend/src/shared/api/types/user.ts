@@ -8,6 +8,8 @@ export interface IUser {
     createdAt: string;
     updatedAt: string;
     lastSeenAt: string;
+    blockedAt: string;
+    blocked: boolean;
 }
 
 export interface IUserCreateRequest {
