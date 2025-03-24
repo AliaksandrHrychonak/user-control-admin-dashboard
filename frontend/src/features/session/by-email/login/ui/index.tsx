@@ -1,3 +1,5 @@
+'use client'
+
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 
@@ -21,17 +23,17 @@ export const LoginForm: FC<ILoginFormProps> = ({ onComplete }) => {
     });
 
     const {
-        formState: { isValid, isDirty },
+        formState: { isValid },
     } = form;
 
-    const { handleSubmit, isLoading } = useLoginFormController({
+    const { handleSubmit } = useLoginFormController({
         onComplete: () => {
             onComplete?.();
             form.reset();
         },
     });
 
-    const canSubmit = [isValid, isDirty, !isLoading].every(Boolean);
+    const canSubmit = [isValid].every(Boolean);
 
     return (
         <Form {...form}>

@@ -22,7 +22,7 @@ export const PasswordStep = (): JSX.Element => {
                         </FormItem>
                     )}
                 />
-                <footer className='flex justify-end'>
+                <footer className='flex justify-end space-x-2'>
                     <Button type='button' variant='outline' onClick={prevStep}>
                         Back
                     </Button>

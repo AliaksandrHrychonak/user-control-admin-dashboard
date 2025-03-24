@@ -3,15 +3,12 @@
 import { useMultiStepFormContext } from '@shared/lib';
 import { Button } from '@shared/ui';
 
-import { useUserCreateFormContext } from '../../../model';
-
 import type { userFormSchema } from '../../../model';
 import type { JSX } from 'react';
 
 export const ReviewStep = (): JSX.Element => {
     const { prevStep, form, isValid } = useMultiStepFormContext<typeof userFormSchema>();
     const values = form.getValues();
-    const { isLoading } = useUserCreateFormContext();
 
     return (
         <div className='flex flex-col space-y-4'>
@@ -37,8 +34,8 @@ export const ReviewStep = (): JSX.Element => {
                 <Button type='button' variant='outline' onClick={prevStep}>
                     Back
                 </Button>
-                <Button type='submit' autoFocus disabled={!isValid || isLoading}>
-                    {isLoading ? 'Creating...' : 'Create User'}
+                <Button type='submit' autoFocus disabled={!isValid}>
+                    {form.formState.isSubmitting ? 'Creating...' : 'Create User'}
                 </Button>
             </footer>
         </div>
