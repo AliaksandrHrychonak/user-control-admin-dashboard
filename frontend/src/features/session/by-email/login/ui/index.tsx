@@ -61,7 +61,7 @@ export const LoginForm: FC<ILoginFormProps> = ({ onComplete }) => {
                     name='password'
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>Email</FormLabel>
+                            <FormLabel>Password</FormLabel>
                             <FormControl>
                                 <Input placeholder='*' type='password' {...field} />
                             </FormControl>
