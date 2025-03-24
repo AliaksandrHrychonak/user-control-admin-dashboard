@@ -3,9 +3,13 @@ import { Mutex } from 'async-mutex';
 import { baseQuery } from './baseQuery';
 import { invalidateTokens } from './invalidate-tokens';
 import { sessionSet } from './session';
+import {Config} from "../../config";
 
 import type { IResponse, ISession } from '../types';
 import type { BaseQueryFn, FetchArgs, FetchBaseQueryError } from '@reduxjs/toolkit/query/react';
+
+
+const {API_MAIN_AUTH_REFRESH} = Config
 
 export type QueryReturnValue<T = unknown, E = unknown, M = unknown> =
     | {
@@ -34,7 +38,7 @@ export const baseQueryWithReauthentication: BaseQueryFn<string | FetchArgs, unkn
             try {
                 const refreshResult = await baseQuery(
                     {
-                        url: '/auth/user/refresh',
+                        url: API_MAIN_AUTH_REFRESH as string,
                         method: 'POST',
                     },
                     api,

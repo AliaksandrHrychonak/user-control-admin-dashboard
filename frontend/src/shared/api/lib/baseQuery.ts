@@ -1,12 +1,13 @@
 import { fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
+import {Config} from "../../config";
 import { CredentialsNames } from '../types';
 import { sessionGet } from './session';
 
-// TODO need fix before review
-const BASE_URL = `http://localhost:3001/api/v1`;
+const {API_MAIN_URL, API_MAIN_URL_PREFIX, API_MAIN_URL_VERSION} = Config
+
 export const baseQuery = fetchBaseQuery({
-    baseUrl: BASE_URL,
+    baseUrl: `${API_MAIN_URL}/${API_MAIN_URL_PREFIX}/${API_MAIN_URL_VERSION}`,
     prepareHeaders: (headers) => {
         headers.set(
             'authorization',
