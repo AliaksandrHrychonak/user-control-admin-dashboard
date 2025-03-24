@@ -32,13 +32,7 @@ export interface IResponseCustomPropertyMetadata {
     messageProperties?: number | string | unknown;
 }
 
-interface IResponseMetadata<T> {
-    customProperty?: IResponseCustomPropertyMetadata;
-    pagination?: IResponsePagination<T>;
-    [key: string]: unknown;
-}
 
 export interface IResponse<T> extends IResponseCustomPropertyMetadata {
-    _metadata?: IResponseMetadata<T>;
     data: T;
 }
