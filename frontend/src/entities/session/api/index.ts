@@ -8,7 +8,8 @@ import type {
     ISession,
     IRequestSignIn,
     IRequestSignUp,
-    IResponseCustomPropertyMetadata} from '@shared/api';
+    IResponseCustomPropertyMetadata
+, IUser} from '@shared/api';
 import type { IResponse } from '@shared/api/types';
 
 // TODO It is better to store requests directly in the feature, need fix after review
@@ -16,7 +17,7 @@ export const sessionApi = baseApi.injectEndpoints({
     endpoints: (build) => ({
         login: build.mutation<ISession, IRequestSignIn>({
             query: (body) => ({
-                url: `/user/login`,
+                url: `/public/user/login`,
                 method: 'POST',
                 body,
             }),
@@ -29,13 +30,19 @@ export const sessionApi = baseApi.injectEndpoints({
         }),
         signUp: build.mutation<IResponseCustomPropertyMetadata, IRequestSignUp>({
             query: (body) => ({
-                url: `/user/sign-up`,
+                url: `/public/user/sign-up`,
                 method: 'POST',
                 body,
             }),
             invalidatesTags: [SESSION_MARK],
         }),
+        profile: build.query<IResponse<IUser>, void>({
+            query: () => ({
+                url: `/auth/user/profile`,
+                method: 'Get',
+            }),
+        })
     }),
 });
 
-export const { useLoginMutation, useSignUpMutation } = sessionApi;
+export const { useLoginMutation, useSignUpMutation, useProfileQuery } = sessionApi;

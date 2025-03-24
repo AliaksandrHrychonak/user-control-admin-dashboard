@@ -1,7 +1,6 @@
 import { createAsyncThunk, createListenerMiddleware, type TypedStartListening } from '@reduxjs/toolkit';
-import { redirect } from 'next/navigation';
 
-import { invalidateTokens, SESSION_MARK, sessionDelete } from '@/shared/api';
+import {invalidateTokens, SESSION_MARK, sessionDelete, USER_MARK} from '@/shared/api';
 import { clearSessionData, sessionApi } from '@entities/session';
 import { wait } from '@shared/lib';
 
@@ -24,12 +23,10 @@ export const logoutThunk = createAsyncThunk<void, void, { state: RootState }>(
         // 👇 ATTENTION: This line clear all baseApi state instead of sessionApi
         // dispatch(api.util.resetApiState())
 
-        dispatch(sessionApi.util.invalidateTags([SESSION_MARK]));
+        dispatch(sessionApi.util.invalidateTags([SESSION_MARK, USER_MARK]));
         sessionStorage.clear();
         localStorage.clear();
         sessionDelete();
-        // TODO Routes should be taken from the config, need fix after review
-        redirect('/sign-in');
     }
 );
 

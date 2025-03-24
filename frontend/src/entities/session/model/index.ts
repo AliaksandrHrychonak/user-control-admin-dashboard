@@ -5,6 +5,7 @@ import { sessionApi } from '../api';
 interface ISessionSliceState {
     isAuth: boolean;
     tokenType?: string;
+    id?: string;
 }
 
 const initialState: ISessionSliceState = {
@@ -23,6 +24,9 @@ export const sessionSlice = createSlice({
             if (state.isAuth) {
                 state.tokenType = payload.tokenType;
             }
+        });
+        builder.addMatcher(sessionApi.endpoints.profile.matchFulfilled, (state, { payload }) => {
+            state.id = payload.data.id;
         });
     },
 });

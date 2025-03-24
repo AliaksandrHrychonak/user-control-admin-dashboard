@@ -1,6 +1,5 @@
 import {
-    baseApi,
-    USER_MARK
+    baseApi
 } from '@shared/api';
 
 import type {
@@ -18,39 +17,39 @@ export const userApi = baseApi.injectEndpoints({
     endpoints: (build) => ({
         create: build.mutation<IResponseCustomPropertyMetadata, IUserCreateRequest>({
             query: (body) => ({
-                url: `/user/sign-up`,
+                url: `/admin/user/create`,
                 method: 'POST',
                 body,
             }),
-            invalidatesTags: [USER_MARK],
+            invalidatesTags: ['USER_MARK'],
         }),
         delete: build.mutation<IResponseCustomPropertyMetadata, IUserDeleteRequest>({
             query: (body) => ({
-                url: `/user/delete`,
+                url: `/admin/user/delete`,
                 method: 'DELETE',
                 body,
             }),
-            invalidatesTags: [USER_MARK],
+            invalidatesTags: ['USER_MARK'],
         }),
         block: build.mutation<IResponseCustomPropertyMetadata, IUserBlockRequest>({
             query: (body) => ({
-                url: `/user/update/blocked`,
+                url: `/admin/user/update/blocked`,
                 method: 'PATCH',
                 body,
             }),
-            invalidatesTags: [USER_MARK],
+            invalidatesTags: ['USER_MARK'],
         }),
         unblock: build.mutation<IResponseCustomPropertyMetadata, IUserUnblockRequest>({
             query: (body) => ({
-                url: `/user/update/unblocked`,
+                url: `/admin/user/update/unblocked`,
                 method: 'PATCH',
                 body,
             }),
-            invalidatesTags: [USER_MARK],
+            invalidatesTags: ['USER_MARK'],
         }),
         list: build.query<IResponsePagination<IUser>, IPaginateQuery>({
             query: ({ page, search, limit, sortBy }) => ({
-                url: `/user/list`,
+                url: `/admin/user/list`,
                 method: 'GET',
                 params: {
                     page,
@@ -59,11 +58,15 @@ export const userApi = baseApi.injectEndpoints({
                     search,
                 },
             }),
-            providesTags: (result: IResponsePagination<IUser> | undefined) =>
-                // TODO fix bug { type: 'USER_TAG' as const, _id }
-                result?.data && result?.data.length !== 0
-                    ? [...result.data.map(({ id }: { id: string }) => ({ type: 'USER_MARK' as const, id }))]
-                    : [USER_MARK],
+            providesTags: (result) => {
+                if (!result?.data?.length) {
+                    return ['USER_MARK'];
+                }
+                return [
+                    ...result.data.map(({ id }) => ({ type: 'USER_MARK' as const, id })),
+                    { type: 'USER_MARK' as const, id: 'LIST' }
+                ];
+            },
         }),
     }),
 });
