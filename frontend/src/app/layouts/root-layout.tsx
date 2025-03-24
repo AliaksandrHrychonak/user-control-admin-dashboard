@@ -31,7 +31,7 @@ const RootLayout: FC<RootLayoutProps> = async ({ children }) => {
     return (
         <html lang='en' suppressHydrationWarning>
             <body
-                className={`${geistSans.variable} ${geistMono.variable} bg-background min-h-svh font-sans antialiased select-none`}
+                className={`${geistSans.variable} ${geistMono.variable} bg-background min-h-svh font-sans antialiased select-none flex flex-col`}
             >
                 <WithStoreProvider>
                     <WithThemeProvider attribute='class' defaultTheme='light' enableSystem disableTransitionOnChange>
