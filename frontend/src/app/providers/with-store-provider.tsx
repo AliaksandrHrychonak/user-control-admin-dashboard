@@ -5,6 +5,8 @@ import { Provider } from 'react-redux';
 import { type Persistor, persistStore } from 'redux-persist';
 import { PersistGate } from 'redux-persist/integration/react';
 
+import {Preloader} from "@shared/ui";
+
 import { createStore } from '../store';
 
 import type { ReactNode, JSX} from 'react';
@@ -23,7 +25,7 @@ export const WithStoreProvider = ({ children }: { children: ReactNode }): JSX.El
 
     return (
         <Provider store={storeRef.current}>
-            <PersistGate loading={<div>Loading withPersistGate</div>} persistor={persistorRef.current}>
+            <PersistGate loading={<Preloader />} persistor={persistorRef.current}>
                 {children}
             </PersistGate>
         </Provider>
