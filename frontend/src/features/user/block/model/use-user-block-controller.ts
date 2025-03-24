@@ -4,8 +4,9 @@ import { useCallback } from 'react';
 import { toast } from 'sonner';
 
 import { useBlockMutation } from '@entities/user';
+import {createMessageBaseQueryError, isFetchBaseQueryError} from '@shared/api';
 
-import type { IUserBlockRequest } from '@shared/api';
+import type {IError, IUserBlockRequest} from '@shared/api';
 
 interface BlockUserControllerProps {
     onComplete?: () => void;
@@ -27,7 +28,13 @@ export const useUserBlockController = ({
                 // TODO Texts should be in the config, need fix after review
                 toast.success('User block successfully');
             } catch (error) {
-                toast.error(`Failed to block user: ${error}`);
+                if(isFetchBaseQueryError(error)) {
+                    const errorData = error.data as IError;
+                    const message = createMessageBaseQueryError(errorData?.errors);
+                    toast.error(`${errorData.statusCode || error.status}. Failed to block user`,{
+                        description: message || errorData.message
+                    });
+                }
             }
         },
         [block, onComplete]

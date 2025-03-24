@@ -4,9 +4,10 @@ import { useCallback } from 'react';
 import { toast } from 'sonner';
 
 import { useCreateMutation } from '@entities/user';
+import { createMessageBaseQueryError, isFetchBaseQueryError} from '@shared/api';
 
 import type { UserFormData } from './create-user.schema';
-import type { IUserCreateRequest } from '@shared/api';
+import type { IUserCreateRequest, IError} from '@shared/api';
 
 
 interface CreateUserControllerProps {
@@ -36,7 +37,13 @@ export const useUserCreateFormController = ({
                 // TODO Texts should be in the config, need fix after review
                 toast.success('User created successfully');
             } catch (error) {
-                toast.error(`Failed to create user: ${error}`);
+                if(isFetchBaseQueryError(error)) {
+                    const errorData = error.data as IError;
+                    const message = createMessageBaseQueryError(errorData?.errors);
+                    toast.error(`${errorData.statusCode || error.status}. Failed to create user`,{
+                        description: message || errorData.message
+                    });
+                }
             }
         },
         [create, onComplete]

@@ -4,9 +4,11 @@ import { useCallback } from 'react';
 import { toast } from 'sonner';
 
 import { useSignUpMutation } from '@entities/session';
+import {createMessageBaseQueryError, isFetchBaseQueryError} from '@shared/api';
 
 import type { RegisterFormData } from './register.schema';
-import type { IRequestSignUp } from '@shared/api';
+import type { IRequestSignUp, IError} from '@shared/api';
+
 
 
 interface RegisterControllerProps {
@@ -35,7 +37,13 @@ export const useRegisterFormController = ({
                 // TODO Texts should be in the config, need fix after review
                 toast.success('Register successfully');
             } catch (error) {
-                toast.error(`Failed register: ${error}`);
+                if(isFetchBaseQueryError(error)) {
+                    const errorData = error.data as IError;
+                    const message = createMessageBaseQueryError(errorData?.errors);
+                    toast.error(`${errorData.statusCode || error.status}. Failed to register`,{
+                        description: message || errorData.message
+                    });
+                }
             }
         },
         [onComplete, signUp]

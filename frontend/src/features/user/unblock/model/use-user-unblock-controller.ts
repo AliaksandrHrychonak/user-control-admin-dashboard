@@ -4,8 +4,9 @@ import { useCallback } from 'react';
 import { toast } from 'sonner';
 
 import { useUnblockMutation } from '@entities/user';
+import {createMessageBaseQueryError, isFetchBaseQueryError, } from '@shared/api';
 
-import type { IUserUnblockRequest } from '@shared/api';
+import type {  IError, IUserUnblockRequest} from '@shared/api';
 
 interface UnblockUserControllerProps {
     onComplete?: () => void;
@@ -27,7 +28,13 @@ export const useUserUnblockController = ({
                 // TODO Texts should be in the config, need fix after review
                 toast.success('User unblock successfully');
             } catch (error) {
-                toast.error(`Failed to unblock user: ${error}`);
+                if(isFetchBaseQueryError(error)) {
+                    const errorData = error.data as IError;
+                    const message = createMessageBaseQueryError(errorData?.errors);
+                    toast.error(`${errorData.statusCode || error.status}. Failed to unblock user`,{
+                        description: message || errorData.message
+                    });
+                }
             }
         },
         [onComplete, unblock]
