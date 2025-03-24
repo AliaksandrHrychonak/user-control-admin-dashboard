@@ -9,14 +9,14 @@ export default registerAs(
         },
         database: {
             error: {
-                unique: "unique",
-                foreignKey: "foreignKey",
-                unknown: "unknown"
+                unique: "Indicates a violation of unique constraint in the database",
+                foreignKey: "Signals an invalid foreign key reference",
+                unknown: "Represents an unspecified database error"
             }
         },
         request: {
             error: {
-                validation: "validation",
+                validation: "Indicates that the request data failed validation checks",
             }
         },
         success: {
