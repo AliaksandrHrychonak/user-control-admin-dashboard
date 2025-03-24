@@ -122,7 +122,7 @@ export const DialogWindow: FC<DialogWindowProps> = ({ children, trigger }) => {
     };
 
     return (
-        <Dialog open={isOpen} onOpenChange={(open) => open ? openDialog() : closeDialog()} modal>
+        <Dialog open={isOpen} onOpenChange={(open) => (open ? openDialog() : closeDialog())} modal>
             <DialogTrigger asChild>{trigger}</DialogTrigger>
             <DialogContent>{children(renderProps)}</DialogContent>
         </Dialog>

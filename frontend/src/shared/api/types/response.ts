@@ -32,7 +32,6 @@ export interface IResponseCustomPropertyMetadata {
     messageProperties?: number | string | unknown;
 }
 
-
 export interface IResponse<T> extends IResponseCustomPropertyMetadata {
     data: T;
 }

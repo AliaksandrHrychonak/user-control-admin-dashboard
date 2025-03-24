@@ -1,9 +1,8 @@
 import { createAsyncThunk, createListenerMiddleware, type TypedStartListening } from '@reduxjs/toolkit';
 
-import {invalidateTokens, SESSION_MARK, sessionDelete, USER_MARK} from '@/shared/api';
+import { invalidateTokens, SESSION_MARK, sessionDelete, USER_MARK } from '@/shared/api';
 import { clearSessionData, sessionApi } from '@entities/session';
 import { wait } from '@shared/lib';
-
 
 export const invalidateTokensListener = createListenerMiddleware();
 

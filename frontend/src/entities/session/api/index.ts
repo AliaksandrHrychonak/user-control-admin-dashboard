@@ -1,15 +1,7 @@
-import {
-    baseApi,
-    sessionSet
-} from '@shared/api';
+import { baseApi, sessionSet } from '@shared/api';
 import { SESSION_MARK } from '@shared/api/tags';
 
-import type {
-    ISession,
-    IRequestSignIn,
-    IRequestSignUp,
-    IResponseCustomPropertyMetadata
-, IUser} from '@shared/api';
+import type { ISession, IRequestSignIn, IRequestSignUp, IResponseCustomPropertyMetadata, IUser } from '@shared/api';
 import type { IResponse } from '@shared/api/types';
 
 // TODO It is better to store requests directly in the feature, need fix after review
@@ -41,7 +33,7 @@ export const sessionApi = baseApi.injectEndpoints({
                 url: `/auth/user/profile`,
                 method: 'Get',
             }),
-        })
+        }),
     }),
 });
 

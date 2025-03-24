@@ -1,14 +1,13 @@
-'use client'
+'use client';
 
-
-import {useRouter} from "next/navigation";
+import { useRouter } from 'next/navigation';
 import React from 'react';
-import {useDispatch} from "react-redux";
+import { useDispatch } from 'react-redux';
 
-import {invalidateTokens} from "@shared/api";
-import {Button} from "@shared/ui";
+import { invalidateTokens } from '@shared/api';
+import { Button } from '@shared/ui';
 
-import type {JSX} from 'react';
+import type { JSX } from 'react';
 
 export const ButtonLogout = (): JSX.Element => {
     const dispatch = useDispatch();

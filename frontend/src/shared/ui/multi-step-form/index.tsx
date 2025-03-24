@@ -34,22 +34,17 @@ export const MultiStepFormProvider = <T extends z.ZodType>({
     const steps = useMemo(
         () =>
             Children.toArray(children).filter(
-                (child): child is ReactElement<StepProps> =>
-                    isValidElement(child) && child.type === MultiStepFormStep
+                (child): child is ReactElement<StepProps> => isValidElement(child) && child.type === MultiStepFormStep
             ),
         [children]
     );
 
     const header = useMemo(() => {
-        return Children.toArray(children).find(
-            (child) => isValidElement(child) && child.type === MultiStepFormHeader
-        );
+        return Children.toArray(children).find((child) => isValidElement(child) && child.type === MultiStepFormHeader);
     }, [children]);
 
     const footer = useMemo(() => {
-        return Children.toArray(children).find(
-            (child) => isValidElement(child) && child.type === MultiStepFormFooter
-        );
+        return Children.toArray(children).find((child) => isValidElement(child) && child.type === MultiStepFormFooter);
     }, [children]);
 
     const stepNames = steps.map((step) => step.props.name);

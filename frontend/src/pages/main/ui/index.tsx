@@ -1,4 +1,4 @@
-import {ButtonLogout} from "@features/session";
+import { ButtonLogout } from '@features/session';
 import { UsersTable } from '@widgets/users-table';
 
 import type { FC, JSX } from 'react';

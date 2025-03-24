@@ -4,9 +4,9 @@ import { useCallback } from 'react';
 import { toast } from 'sonner';
 
 import { useDeleteMutation } from '@entities/user';
-import {createMessageBaseQueryError, isFetchBaseQueryError} from '@shared/api';
+import { createMessageBaseQueryError, isFetchBaseQueryError } from '@shared/api';
 
-import type { IError, IUserDeleteRequest} from '@shared/api';
+import type { IError, IUserDeleteRequest } from '@shared/api';
 
 interface DeleteUserControllerProps {
     onComplete?: () => void;
@@ -31,8 +31,8 @@ export const useUserDeleteController = ({
                 if (isFetchBaseQueryError(error)) {
                     const errorData = error.data as IError;
                     const message = createMessageBaseQueryError(errorData?.errors);
-                    toast.error(`${errorData.statusCode || error.status}. Failed to delete user`,{
-                        description: message || errorData.message
+                    toast.error(`${errorData.statusCode || error.status}. Failed to delete user`, {
+                        description: message || errorData.message,
                     });
                 }
             }

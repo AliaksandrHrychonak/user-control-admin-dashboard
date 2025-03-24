@@ -1,6 +1,4 @@
-import {
-    baseApi
-} from '@shared/api';
+import { baseApi } from '@shared/api';
 
 import type {
     IPaginateQuery,
@@ -10,7 +8,8 @@ import type {
     IUserDeleteRequest,
     IUserUnblockRequest,
     IResponsePagination,
-    IUserBlockRequest} from '@shared/api';
+    IUserBlockRequest,
+} from '@shared/api';
 
 // TODO It is better to store requests directly in the feature, need fix after review
 export const userApi = baseApi.injectEndpoints({
@@ -64,7 +63,7 @@ export const userApi = baseApi.injectEndpoints({
                 }
                 return [
                     ...result.data.map(({ id }) => ({ type: 'USER_MARK' as const, id })),
-                    { type: 'USER_MARK' as const, id: 'LIST' }
+                    { type: 'USER_MARK' as const, id: 'LIST' },
                 ];
             },
         }),

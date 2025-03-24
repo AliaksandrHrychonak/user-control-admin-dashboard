@@ -5,11 +5,11 @@ import { Provider } from 'react-redux';
 import { type Persistor, persistStore } from 'redux-persist';
 import { PersistGate } from 'redux-persist/integration/react';
 
-import {Preloader} from "@shared/ui";
+import { Preloader } from '@shared/ui';
 
 import { createStore } from '../store';
 
-import type { ReactNode, JSX} from 'react';
+import type { ReactNode, JSX } from 'react';
 
 export const WithStoreProvider = ({ children }: { children: ReactNode }): JSX.Element => {
     const storeRef = useRef<AppStore>(undefined);

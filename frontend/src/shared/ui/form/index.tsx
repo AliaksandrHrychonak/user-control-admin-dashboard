@@ -8,7 +8,7 @@ import { useFormField, FormItemContext, cn } from '../../lib';
 import { Label } from '../label';
 
 import type * as LabelPrimitive from '@radix-ui/react-label';
-import type { JSX , ComponentProps} from 'react';
+import type { JSX, ComponentProps } from 'react';
 
 const Form = FormProvider;
 

@@ -9,7 +9,12 @@ const MILLISECONDS_IN_SECOND = 1000;
 
 export const sessionGet = (name: CredentialsNames): string | undefined => Cookies.get(name);
 
-const cookieSet = (name: string, value: string, expiration?: number, options?: Cookies.CookieAttributes): string | undefined => {
+const cookieSet = (
+    name: string,
+    value: string,
+    expiration?: number,
+    options?: Cookies.CookieAttributes
+): string | undefined => {
     const expirationDate = expiration
         ? new Date(new Date().getTime() + expiration * MILLISECONDS_IN_SECOND)
         : undefined;

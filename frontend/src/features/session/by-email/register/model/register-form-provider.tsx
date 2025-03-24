@@ -10,7 +10,7 @@ import { RegisterFormContext } from './register-form-context';
 import { RegisterFormSchema } from './register.schema';
 import { useRegisterFormController } from './use-register-form-controller';
 
-import type { RegisterFormData} from './register.schema';
+import type { RegisterFormData } from './register.schema';
 import type { FC, ReactNode } from 'react';
 
 interface UserCreateProviderProps {

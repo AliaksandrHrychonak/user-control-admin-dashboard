@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
@@ -8,7 +8,7 @@ import { Form, FormControl, FormItem, FormLabel, FormMessage, Input, Button } fr
 
 import { useLoginFormController, createDefaultValues, LoginFormSchema } from '../model';
 
-import type { LoginFormData} from '../model';
+import type { LoginFormData } from '../model';
 import type { FC } from 'react';
 
 interface ILoginFormProps {

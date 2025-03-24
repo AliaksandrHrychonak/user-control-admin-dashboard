@@ -1,4 +1,4 @@
-import type { ValidationErrorItem } from "@shared/api";
+import type { ValidationErrorItem } from '@shared/api';
 
 export const createMessageBaseQueryError = (data: unknown): string | null => {
     if (!data) {
@@ -8,17 +8,13 @@ export const createMessageBaseQueryError = (data: unknown): string | null => {
     const error = data as ValidationErrorItem | ValidationErrorItem[];
 
     if (Array.isArray(error)) {
-        const messages = error
-            .map(err => createMessageBaseQueryError(err))
-            .filter(Boolean);
+        const messages = error.map((err) => createMessageBaseQueryError(err)).filter(Boolean);
         return messages.length ? messages.join(', ') : null;
     }
 
-
-
     if (error && typeof error === 'object' && 'constraints' in error && error.constraints) {
         const messages = Object.values(error.constraints);
-        const errorMessage = messages.find(msg => msg);
+        const errorMessage = messages.find((msg) => msg);
 
         if (!errorMessage) {
             return null;
@@ -35,4 +31,4 @@ export const createMessageBaseQueryError = (data: unknown): string | null => {
     }
 
     return null;
-}
+};

@@ -34,10 +34,7 @@ type TableRowProps = ComponentProps<'tr'>;
 export const TableRow = ({ className, ...props }: TableRowProps): JSX.Element => (
     <tr
         data-slot='row'
-        className={cn(
-            'hover:bg-muted/50 data-[state=selected]:bg-muted border-b transition-colors',
-            className
-        )}
+        className={cn('hover:bg-muted/50 data-[state=selected]:bg-muted border-b transition-colors', className)}
         {...props}
     />
 );
@@ -68,9 +65,5 @@ export const TableCell = ({ className, ...props }: TableCellProps): JSX.Element 
 
 type TableCaptionProps = ComponentProps<'caption'>;
 export const TableCaption = ({ className, ...props }: TableCaptionProps): JSX.Element => (
-    <caption
-        data-slot='caption'
-        className={cn('text-muted-foreground mt-4 text-sm', className)}
-        {...props}
-    />
+    <caption data-slot='caption' className={cn('text-muted-foreground mt-4 text-sm', className)} {...props} />
 );

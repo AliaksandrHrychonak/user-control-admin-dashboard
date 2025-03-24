@@ -6,7 +6,7 @@ import React from 'react';
 import { LoginForm } from '@features/session';
 import { Button } from '@shared/ui';
 
-import type {JSX} from 'react';
+import type { JSX } from 'react';
 
 const SignInPage = (): JSX.Element => {
     const router = useRouter();

@@ -6,7 +6,7 @@ import React from 'react';
 import { RegisterForm } from '@features/session';
 import { Button } from '@shared/ui';
 
-import type {JSX} from 'react';
+import type { JSX } from 'react';
 
 const SignUpPage = (): JSX.Element => {
     const router = useRouter();

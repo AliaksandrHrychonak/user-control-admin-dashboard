@@ -35,9 +35,7 @@ export const useMultiStepForm = <Schema extends z.ZodType>(
             Schema['_output'] extends BrowserNativeObject | Blob
                 ? Schema['_output']
                 : {
-                      [K in keyof Schema['_output']]-?: NonNullable<
-                          DeepRequired<Schema['_output'][K]>
-                      >;
+                      [K in keyof Schema['_output']]-?: NonNullable<DeepRequired<Schema['_output'][K]>>;
                   }
         >
     > & {
@@ -128,17 +126,6 @@ export const useMultiStepForm = <Schema extends z.ZodType>(
             isValid,
             errors,
         }),
-        [
-            form,
-            stepNames,
-            currentStepIndex,
-            nextStep,
-            prevStep,
-            goToStep,
-            direction,
-            isStepValid,
-            isValid,
-            errors,
-        ]
+        [form, stepNames, currentStepIndex, nextStep, prevStep, goToStep, direction, isStepValid, isValid, errors]
     );
 };

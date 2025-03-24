@@ -3,13 +3,12 @@ import { Mutex } from 'async-mutex';
 import { baseQuery } from './baseQuery';
 import { invalidateTokens } from './invalidate-tokens';
 import { sessionSet } from './session';
-import {Config} from "../../config";
+import { Config } from '../../config';
 
 import type { IResponse, ISession } from '../types';
 import type { BaseQueryFn, FetchArgs, FetchBaseQueryError } from '@reduxjs/toolkit/query/react';
 
-
-const {API_MAIN_AUTH_REFRESH} = Config
+const { API_MAIN_AUTH_REFRESH } = Config;
 
 export type QueryReturnValue<T = unknown, E = unknown, M = unknown> =
     | {

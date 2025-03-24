@@ -1,25 +1,22 @@
 'use client';
 
-import {
-    flexRender,
-    getCoreRowModel,
-    getPaginationRowModel,
-    useReactTable,
-} from '@tanstack/react-table';
+import { flexRender, getCoreRowModel, getPaginationRowModel, useReactTable } from '@tanstack/react-table';
 import { ArrowUpDown, Plus, Trash, Lock, LockOpen } from 'lucide-react';
-import {useRouter} from "next/navigation";
-import { useState} from 'react';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
-import {useProfileQuery} from "@entities/session";
+import { useProfileQuery } from '@entities/session';
 import { useListQuery } from '@entities/user';
 import {
     BlockUserButton,
-    CreateUserFormView, DeleteUserButton, UnblockUserButton,
+    CreateUserFormView,
+    DeleteUserButton,
+    UnblockUserButton,
     useUserBlockController,
     useUserDeleteController,
     useUserUnblockController,
 } from '@features/user';
-import {cn, DialogProvider} from '@shared/lib';
+import { cn, DialogProvider } from '@shared/lib';
 import {
     Button,
     Checkbox,
@@ -40,10 +37,8 @@ import {
 } from '@shared/ui';
 
 import type { IUser, IUserBlockRequest, IUserDeleteRequest, IUserUnblockRequest } from '@shared/api';
-import type {
-    ColumnDef,
-    ColumnSort} from '@tanstack/react-table';
-import type {JSX} from 'react';
+import type { ColumnDef, ColumnSort } from '@tanstack/react-table';
+import type { JSX } from 'react';
 
 // TODO need fix before review
 const SORTABLE_COLUMNS = ['id', 'email', 'firstName', 'lastName', 'lastSeenAt'];
@@ -52,7 +47,7 @@ const PAGE_SIZES = [5, 10, 20, 50, 100];
 export const columns: ColumnDef<IUser>[] = [
     {
         id: 'select',
-        header: ({ table }): JSX.Element  => (
+        header: ({ table }): JSX.Element => (
             <Checkbox
                 checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && 'indeterminate')}
                 onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
@@ -77,10 +72,7 @@ export const columns: ColumnDef<IUser>[] = [
                 <Button
                     variant='ghost'
                     onClick={() => column.toggleSorting(isSorted === 'asc')}
-                    className={cn(
-                        'p-0',
-                        isSorted && 'bg-accent text-accent-foreground'
-                    )}
+                    className={cn('p-0', isSorted && 'bg-accent text-accent-foreground')}
                 >
                     Email
                     <ArrowUpDown />
@@ -98,10 +90,7 @@ export const columns: ColumnDef<IUser>[] = [
                 <Button
                     variant='ghost'
                     onClick={() => column.toggleSorting(isSorted === 'asc')}
-                    className={cn(
-                        'p-0',
-                        isSorted && 'bg-accent text-accent-foreground'
-                    )}
+                    className={cn('p-0', isSorted && 'bg-accent text-accent-foreground')}
                 >
                     First Name
                     <ArrowUpDown />
@@ -119,10 +108,7 @@ export const columns: ColumnDef<IUser>[] = [
                 <Button
                     variant='ghost'
                     onClick={() => column.toggleSorting(isSorted === 'asc')}
-                    className={cn(
-                        'p-0',
-                        isSorted && 'bg-accent text-accent-foreground'
-                    )}
+                    className={cn('p-0', isSorted && 'bg-accent text-accent-foreground')}
                 >
                     Last Name
                     <ArrowUpDown />
@@ -140,10 +126,7 @@ export const columns: ColumnDef<IUser>[] = [
                 <Button
                     variant='ghost'
                     onClick={() => column.toggleSorting(isSorted === 'asc')}
-                    className={cn(
-                        'p-0',
-                        isSorted && 'bg-accent text-accent-foreground'
-                    )}
+                    className={cn('p-0', isSorted && 'bg-accent text-accent-foreground')}
                 >
                     Last Seen
                     <ArrowUpDown />
@@ -159,7 +142,7 @@ export const columns: ColumnDef<IUser>[] = [
     {
         accessorKey: 'blocked',
         header: 'blocked',
-    }
+    },
 ];
 
 export const UsersTable = (): JSX.Element => {
@@ -175,7 +158,7 @@ export const UsersTable = (): JSX.Element => {
     ]);
     const router = useRouter();
 
-    const {data: dataProfile } = useProfileQuery()
+    const { data: dataProfile } = useProfileQuery();
 
     const { data, isLoading } = useListQuery({
         page,
@@ -217,8 +200,8 @@ export const UsersTable = (): JSX.Element => {
 
     const handleBlock = async (): Promise<void> => {
         await onBlock(selectedUsers);
-        if(dataProfile?.data?.id && selectedUsers.users.includes(dataProfile?.data?.id)) {
-            router.push('/sign-up')
+        if (dataProfile?.data?.id && selectedUsers.users.includes(dataProfile?.data?.id)) {
+            router.push('/sign-up');
         }
     };
 
@@ -228,8 +211,8 @@ export const UsersTable = (): JSX.Element => {
 
     const handleDelete = async (): Promise<void> => {
         await onDelete(selectedUsers);
-        if(dataProfile?.data?.id && selectedUsers.users.includes(dataProfile?.data?.id)) {
-            router.push('/sign-up')
+        if (dataProfile?.data?.id && selectedUsers.users.includes(dataProfile?.data?.id)) {
+            router.push('/sign-up');
         }
     };
 
@@ -272,53 +255,57 @@ export const UsersTable = (): JSX.Element => {
                     <UnblockUserButton onClick={handleUnblock} disabled={!selectedUsers.users.length}>
                         <LockOpen />
                     </UnblockUserButton>
-                    <DeleteUserButton onClick={handleDelete} disabled={!selectedUsers.users.length} variant='destructive'>
+                    <DeleteUserButton
+                        onClick={handleDelete}
+                        disabled={!selectedUsers.users.length}
+                        variant='destructive'
+                    >
                         <Trash />
                     </DeleteUserButton>
                 </div>
             </div>
-            <div className="overflow-x-auto border rounded">
-                        <Table className="w-full min-w-[800px]">
-                            <TableHeader>
-                                {table.getHeaderGroups().map((headerGroup) => (
-                                    <TableRow key={headerGroup.id}>
-                                        {headerGroup.headers.map((header) => (
-                                            <TableHead key={header.id}>
-                                                {header.isPlaceholder
-                                                    ? null
-                                                    : flexRender(header.column.columnDef.header, header.getContext())}
-                                            </TableHead>
-                                        ))}
-                                    </TableRow>
+            <div className='overflow-x-auto border rounded'>
+                <Table className='w-full min-w-[800px]'>
+                    <TableHeader>
+                        {table.getHeaderGroups().map((headerGroup) => (
+                            <TableRow key={headerGroup.id}>
+                                {headerGroup.headers.map((header) => (
+                                    <TableHead key={header.id}>
+                                        {header.isPlaceholder
+                                            ? null
+                                            : flexRender(header.column.columnDef.header, header.getContext())}
+                                    </TableHead>
                                 ))}
-                            </TableHeader>
-                            <TableBody>
-                                {isLoading ? (
-                                    <TableRow>
-                                        <TableCell colSpan={columns.length} className='h-24 text-center'>
-                                            <Preloader />
+                            </TableRow>
+                        ))}
+                    </TableHeader>
+                    <TableBody>
+                        {isLoading ? (
+                            <TableRow>
+                                <TableCell colSpan={columns.length} className='h-24 text-center'>
+                                    <Preloader />
+                                </TableCell>
+                            </TableRow>
+                        ) : table.getRowModel().rows?.length ? (
+                            table.getRowModel().rows.map((row) => (
+                                <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
+                                    {row.getVisibleCells().map((cell) => (
+                                        <TableCell key={cell.id}>
+                                            {flexRender(cell.column.columnDef.cell, cell.getContext())}
                                         </TableCell>
-                                    </TableRow>
-                                ) : table.getRowModel().rows?.length ? (
-                                    table.getRowModel().rows.map((row) => (
-                                        <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
-                                            {row.getVisibleCells().map((cell) => (
-                                                <TableCell key={cell.id}>
-                                                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                                                </TableCell>
-                                            ))}
-                                        </TableRow>
-                                    ))
-                                ) : (
-                                    <TableRow>
-                                        <TableCell colSpan={columns.length} className='h-24 text-center'>
-                                            No results.
-                                        </TableCell>
-                                    </TableRow>
-                                )}
-                            </TableBody>
-                        </Table>
-                </div>
+                                    ))}
+                                </TableRow>
+                            ))
+                        ) : (
+                            <TableRow>
+                                <TableCell colSpan={columns.length} className='h-24 text-center'>
+                                    No results.
+                                </TableCell>
+                            </TableRow>
+                        )}
+                    </TableBody>
+                </Table>
+            </div>
             <div className='flex items-center justify-between space-x-2 py-4 max-[550px]:flex-col max-[550px]:items-start gap-5'>
                 <div className='flex items-center space-x-2'>
                     <p className='text-sm font-medium'>Rows per page</p>
