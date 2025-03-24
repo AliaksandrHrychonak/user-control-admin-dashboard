@@ -6,17 +6,20 @@ import {
     getPaginationRowModel,
     useReactTable,
 } from '@tanstack/react-table';
-import { ArrowUpDown, Plus } from 'lucide-react';
+import { ArrowUpDown, Plus, Trash, Lock, LockOpen } from 'lucide-react';
+import {useRouter} from "next/navigation";
 import { useState} from 'react';
 
+import {useProfileQuery} from "@entities/session";
 import { useListQuery } from '@entities/user';
 import {
-    CreateUserFormView,
+    BlockUserButton,
+    CreateUserFormView, DeleteUserButton, UnblockUserButton,
     useUserBlockController,
     useUserDeleteController,
     useUserUnblockController,
 } from '@features/user';
-import { DialogProvider } from '@shared/lib';
+import {cn, DialogProvider} from '@shared/lib';
 import {
     Button,
     Checkbox,
@@ -33,6 +36,7 @@ import {
     SelectItem,
     SelectTrigger,
     SelectValue,
+    Preloader,
 } from '@shared/ui';
 
 import type { IUser, IUserBlockRequest, IUserDeleteRequest, IUserUnblockRequest } from '@shared/api';
@@ -68,11 +72,15 @@ export const columns: ColumnDef<IUser>[] = [
     {
         accessorKey: 'email',
         header: ({ column }): JSX.Element | string => {
+            const isSorted = column.getIsSorted();
             return SORTABLE_COLUMNS.includes('email') ? (
                 <Button
                     variant='ghost'
-                    onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-                    className='p-0'
+                    onClick={() => column.toggleSorting(isSorted === 'asc')}
+                    className={cn(
+                        'p-0',
+                        isSorted && 'bg-accent text-accent-foreground'
+                    )}
                 >
                     Email
                     <ArrowUpDown />
@@ -85,11 +93,15 @@ export const columns: ColumnDef<IUser>[] = [
     {
         accessorKey: 'firstName',
         header: ({ column }): JSX.Element | string => {
+            const isSorted = column.getIsSorted();
             return SORTABLE_COLUMNS.includes('firstName') ? (
                 <Button
                     variant='ghost'
-                    onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-                    className='p-0'
+                    onClick={() => column.toggleSorting(isSorted === 'asc')}
+                    className={cn(
+                        'p-0',
+                        isSorted && 'bg-accent text-accent-foreground'
+                    )}
                 >
                     First Name
                     <ArrowUpDown />
@@ -102,11 +114,15 @@ export const columns: ColumnDef<IUser>[] = [
     {
         accessorKey: 'lastName',
         header: ({ column }): JSX.Element | string => {
+            const isSorted = column.getIsSorted();
             return SORTABLE_COLUMNS.includes('lastName') ? (
                 <Button
                     variant='ghost'
-                    onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-                    className='p-0'
+                    onClick={() => column.toggleSorting(isSorted === 'asc')}
+                    className={cn(
+                        'p-0',
+                        isSorted && 'bg-accent text-accent-foreground'
+                    )}
                 >
                     Last Name
                     <ArrowUpDown />
@@ -119,11 +135,15 @@ export const columns: ColumnDef<IUser>[] = [
     {
         accessorKey: 'lastSeenAt',
         header: ({ column }): JSX.Element | string => {
+            const isSorted = column.getIsSorted();
             return SORTABLE_COLUMNS.includes('lastSeenAt') ? (
                 <Button
                     variant='ghost'
-                    onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-                    className='p-0'
+                    onClick={() => column.toggleSorting(isSorted === 'asc')}
+                    className={cn(
+                        'p-0',
+                        isSorted && 'bg-accent text-accent-foreground'
+                    )}
                 >
                     Last Seen
                     <ArrowUpDown />
@@ -136,19 +156,26 @@ export const columns: ColumnDef<IUser>[] = [
             return row.getValue('lastSeenAt');
         },
     },
+    {
+        accessorKey: 'blocked',
+        header: 'blocked',
+    }
 ];
 
 export const UsersTable = (): JSX.Element => {
     const [page, setPage] = useState(1);
-    const [pageSize, setPageSize] = useState(5);
+    const [pageSize, setPageSize] = useState(10);
     const [searchTerm, setSearchTerm] = useState('');
     const [rowSelection, setRowSelection] = useState({});
     const [sorting, setSorting] = useState<ColumnSort[]>([
         {
             id: 'lastSeenAt',
-            desc: false,
+            desc: true,
         },
     ]);
+    const router = useRouter();
+
+    const {data: dataProfile } = useProfileQuery()
 
     const { data, isLoading } = useListQuery({
         page,
@@ -190,6 +217,9 @@ export const UsersTable = (): JSX.Element => {
 
     const handleBlock = async (): Promise<void> => {
         await onBlock(selectedUsers);
+        if(dataProfile?.data?.id && selectedUsers.users.includes(dataProfile?.data?.id)) {
+            router.push('/sign-up')
+        }
     };
 
     const handleUnblock = async (): Promise<void> => {
@@ -198,18 +228,21 @@ export const UsersTable = (): JSX.Element => {
 
     const handleDelete = async (): Promise<void> => {
         await onDelete(selectedUsers);
+        if(dataProfile?.data?.id && selectedUsers.users.includes(dataProfile?.data?.id)) {
+            router.push('/sign-up')
+        }
     };
 
     return (
-        <div className='w-full'>
-            <div className='flex items-center justify-between py-4'>
+        <div className='w-full max-w-[1440px] mx-auto overflow-hidden'>
+            <div className='flex items-center justify-between py-4 max-[550px]:flex-col max-[550px]:items-start gap-5'>
                 <Input
                     placeholder='Search users...'
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     className='max-w-sm'
                 />
-                <div className='space-x-2'>
+                <div className='flex items-center space-x-2'>
                     <DialogProvider>
                         <DialogWindow
                             trigger={
@@ -233,60 +266,60 @@ export const UsersTable = (): JSX.Element => {
                             }}
                         </DialogWindow>
                     </DialogProvider>
-                    <Button onClick={handleBlock} disabled={!selectedUsers.users.length}>
-                        Block
-                    </Button>
-                    <Button onClick={handleUnblock} disabled={!selectedUsers.users.length}>
-                        Unblock
-                    </Button>
-                    <Button onClick={handleDelete} disabled={!selectedUsers.users.length} variant='destructive'>
-                        Delete
-                    </Button>
+                    <BlockUserButton onClick={handleBlock} disabled={!selectedUsers.users.length}>
+                        <Lock />
+                    </BlockUserButton>
+                    <UnblockUserButton onClick={handleUnblock} disabled={!selectedUsers.users.length}>
+                        <LockOpen />
+                    </UnblockUserButton>
+                    <DeleteUserButton onClick={handleDelete} disabled={!selectedUsers.users.length} variant='destructive'>
+                        <Trash />
+                    </DeleteUserButton>
                 </div>
             </div>
-            <div className='rounded-md border'>
-                <Table>
-                    <TableHeader>
-                        {table.getHeaderGroups().map((headerGroup) => (
-                            <TableRow key={headerGroup.id}>
-                                {headerGroup.headers.map((header) => (
-                                    <TableHead key={header.id}>
-                                        {header.isPlaceholder
-                                            ? null
-                                            : flexRender(header.column.columnDef.header, header.getContext())}
-                                    </TableHead>
+            <div className="overflow-x-auto border rounded">
+                        <Table className="w-full min-w-[800px]">
+                            <TableHeader>
+                                {table.getHeaderGroups().map((headerGroup) => (
+                                    <TableRow key={headerGroup.id}>
+                                        {headerGroup.headers.map((header) => (
+                                            <TableHead key={header.id}>
+                                                {header.isPlaceholder
+                                                    ? null
+                                                    : flexRender(header.column.columnDef.header, header.getContext())}
+                                            </TableHead>
+                                        ))}
+                                    </TableRow>
                                 ))}
-                            </TableRow>
-                        ))}
-                    </TableHeader>
-                    <TableBody>
-                        {isLoading ? (
-                            <TableRow>
-                                <TableCell colSpan={columns.length} className='h-24 text-center'>
-                                    Loading...
-                                </TableCell>
-                            </TableRow>
-                        ) : table.getRowModel().rows?.length ? (
-                            table.getRowModel().rows.map((row) => (
-                                <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
-                                    {row.getVisibleCells().map((cell) => (
-                                        <TableCell key={cell.id}>
-                                            {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                            </TableHeader>
+                            <TableBody>
+                                {isLoading ? (
+                                    <TableRow>
+                                        <TableCell colSpan={columns.length} className='h-24 text-center'>
+                                            <Preloader />
                                         </TableCell>
-                                    ))}
-                                </TableRow>
-                            ))
-                        ) : (
-                            <TableRow>
-                                <TableCell colSpan={columns.length} className='h-24 text-center'>
-                                    No results.
-                                </TableCell>
-                            </TableRow>
-                        )}
-                    </TableBody>
-                </Table>
-            </div>
-            <div className='flex items-center justify-between space-x-2 py-4'>
+                                    </TableRow>
+                                ) : table.getRowModel().rows?.length ? (
+                                    table.getRowModel().rows.map((row) => (
+                                        <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
+                                            {row.getVisibleCells().map((cell) => (
+                                                <TableCell key={cell.id}>
+                                                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                                                </TableCell>
+                                            ))}
+                                        </TableRow>
+                                    ))
+                                ) : (
+                                    <TableRow>
+                                        <TableCell colSpan={columns.length} className='h-24 text-center'>
+                                            No results.
+                                        </TableCell>
+                                    </TableRow>
+                                )}
+                            </TableBody>
+                        </Table>
+                </div>
+            <div className='flex items-center justify-between space-x-2 py-4 max-[550px]:flex-col max-[550px]:items-start gap-5'>
                 <div className='flex items-center space-x-2'>
                     <p className='text-sm font-medium'>Rows per page</p>
                     <Select value={pageSize.toString()} onValueChange={(value) => setPageSize(Number(value))}>
