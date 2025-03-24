@@ -1,9 +1,13 @@
 import { UserService } from '../services/user.service';
 import { ApiTags } from '@nestjs/swagger';
-import {Controller, ForbiddenException, HttpCode, HttpStatus, Post, UseGuards} from '@nestjs/common';
+import {Controller, ForbiddenException, Get, HttpCode, HttpStatus, Post, UseGuards} from '@nestjs/common';
 import { AuthService } from '../../../common/auth/services/auth.service';
 import { GetUser, UserAuthProtected, UserProtected } from '../decorators/user.decorator';
-import { AuthJwtRefreshProtected, AuthJwtToken } from '../../../common/auth/decorators/auth.jwt.decorator';
+import {
+    AuthJwtAccessProtected,
+    AuthJwtRefreshProtected,
+    AuthJwtToken
+} from '../../../common/auth/decorators/auth.jwt.decorator';
 import { UserDoc } from '../repository/entities/user.entity';
 import { ENUM_USER_STATUS_CODE_ERROR } from '../constants/user.status-code.constant';
 import { UserPayloadSerialization } from '../serializations/user.payload.serialization';
@@ -58,5 +62,12 @@ export class UserAuthController {
                 refreshToken,
             },
         };
+    }
+
+    @UserProtected()
+    @AuthJwtAccessProtected()
+    @Get('/profile')
+    async profile(@GetUser() user: UserDoc) {
+        return { data: user };
     }
 }

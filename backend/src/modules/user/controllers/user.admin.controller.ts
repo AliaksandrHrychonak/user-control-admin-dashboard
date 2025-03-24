@@ -1,6 +1,6 @@
 import { AuthService } from '../../../common/auth/services/auth.service';
 import { ApiTags } from '@nestjs/swagger';
-import {Body, Controller, Delete, Get, HttpCode, Patch, Post, UseGuards} from '@nestjs/common';
+import {Body, Controller, Delete, Get, Patch, Post, UseGuards} from '@nestjs/common';
 import { UserService } from '../services/user.service';
 import { AuthJwtAdminAccessProtected } from '../../../common/auth/decorators/auth.jwt.decorator';
 
