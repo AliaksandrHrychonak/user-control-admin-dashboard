@@ -12,7 +12,7 @@ export const GetUser = createParamDecorator((returnPlain: boolean, ctx: Executio
 });
 
 export function UserProtected(): MethodDecorator {
-    return applyDecorators(UseGuards(UserPayloadPutToRequestGuard, UserNotFoundGuard));
+    return applyDecorators(UseGuards(UserPayloadPutToRequestGuard, UserNotFoundGuard, UserBlockedGuard));
 }
 
 export function UserAuthProtected(): MethodDecorator {
